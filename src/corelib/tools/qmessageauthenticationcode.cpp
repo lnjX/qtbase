@@ -101,15 +101,23 @@ static int qt_hash_block_size(QCryptographicHash::Algorithm method)
         return SHA512_Message_Block_Size;
     case QCryptographicHash::RealSha3_224:
     case QCryptographicHash::Keccak_224:
+    case QCryptographicHash::Blake2b_224:
+    case QCryptographicHash::Blake2s_224:
         return 144;
     case QCryptographicHash::RealSha3_256:
     case QCryptographicHash::Keccak_256:
+    case QCryptographicHash::Blake2b_256:
+    case QCryptographicHash::Blake2s_256:
         return 136;
     case QCryptographicHash::RealSha3_384:
     case QCryptographicHash::Keccak_384:
+    case QCryptographicHash::Blake2b_384:
+    case QCryptographicHash::Blake2s_384:
         return 104;
     case QCryptographicHash::RealSha3_512:
     case QCryptographicHash::Keccak_512:
+    case QCryptographicHash::Blake2b_512:
+    case QCryptographicHash::Blake2s_512:
         return 72;
     }
     return 0;

@@ -164,6 +164,10 @@ static inline int SHA384_512AddLength(SHA512Context *context, unsigned int lengt
   QT_PREPEND_NAMESPACE(quint64) addTemp;
   return SHA384_512AddLengthM(context, length);
 }
+
+#include "../../3rdparty/libb2/src/blake2.h"
+// #include "../../3rdparty/libb2/src/blake2b.c"
+// #include "../../3rdparty/libb2/src/blake2s.c"
 #endif // QT_CRYPTOGRAPHICHASH_ONLY_SHA1
 
 QT_BEGIN_NAMESPACE
@@ -182,6 +186,8 @@ public:
         SHA384Context sha384Context;
         SHA512Context sha512Context;
         SHA3Context sha3Context;
+        blake2b_state blake2bContext;
+        blake2s_state blake2sContext;
 #endif
     };
 #ifndef QT_CRYPTOGRAPHICHASH_ONLY_SHA1
@@ -277,6 +283,14 @@ void QCryptographicHashPrivate::sha3Finish(int bitCount, Sha3Variant sha3Variant
   \value Keccak_256 Generate a Keccak-256 hash sum. Introduced in Qt 5.9.2
   \value Keccak_384 Generate a Keccak-384 hash sum. Introduced in Qt 5.9.2
   \value Keccak_512 Generate a Keccak-512 hash sum. Introduced in Qt 5.9.2
+  \value Blake2b_224 Generate a BLAKE2b224 hash sum. Introduced in Qt ?.?.? FIXME: version
+  \value Blake2b_256 Generate a BLAKE2b256 hash sum. Introduced in Qt ?.?.?
+  \value Blake2b_384 Generate a BLAKE2b384 hash sum. Introduced in Qt ?.?.?
+  \value Blake2b_512 Generate a BLAKE2b512 hash sum. Introduced in Qt ?.?.?
+  \value Blake2s_224 Generate a BLAKE2s224 hash sum. Introduced in Qt ?.?.?
+  \value Blake2s_256 Generate a BLAKE2s256 hash sum. Introduced in Qt ?.?.?
+  \value Blake2s_384 Generate a BLAKE2s384 hash sum. Introduced in Qt ?.?.?
+  \value Blake2s_512 Generate a BLAKE2s512 hash sum. Introduced in Qt ?.?.?
   \omitvalue RealSha3_224
   \omitvalue RealSha3_256
   \omitvalue RealSha3_384
@@ -350,6 +364,30 @@ void QCryptographicHash::reset()
     case Keccak_512:
         sha3Init(&d->sha3Context, 512);
         break;
+    case Blake2b_224:
+        blake2b_init(&d->blake2bContext, 224/8);
+        break;
+    case Blake2b_256:
+        blake2b_init(&d->blake2bContext, 256/8);
+        break;
+    case Blake2b_384:
+        blake2b_init(&d->blake2bContext, 384/8);
+        break;
+    case Blake2b_512:
+        blake2b_init(&d->blake2bContext, 512/8);
+        break;
+    case Blake2s_224:
+        blake2s_init(&d->blake2sContext, 224/8);
+        break;
+    case Blake2s_256:
+        blake2s_init(&d->blake2sContext, 256/8);
+        break;
+    case Blake2s_384:
+        blake2s_init(&d->blake2sContext, 384/8);
+        break;
+    case Blake2s_512:
+        blake2s_init(&d->blake2sContext, 512/8);
+        break;
 #endif
     }
     d->result.clear();
@@ -404,6 +442,18 @@ void QCryptographicHash::addData(const char *data, int length)
     case RealSha3_512:
     case Keccak_512:
         sha3Update(&d->sha3Context, reinterpret_cast<const BitSequence *>(data), quint64(length) * 8);
+        break;
+    case Blake2b_224:
+    case Blake2b_256:
+    case Blake2b_384:
+    case Blake2b_512:
+        blake2b_update(&d->blake2bContext, reinterpret_cast<const uint8_t *>(data), length);
+        break;
+    case Blake2s_224:
+    case Blake2s_256:
+    case Blake2s_384:
+    case Blake2s_512:
+        blake2s_update(&d->blake2sContext, reinterpret_cast<const uint8_t *>(data), length);
         break;
 #endif
     }
@@ -533,6 +583,54 @@ QByteArray QCryptographicHash::result() const
         d->sha3Finish(512, QCryptographicHashPrivate::Sha3Variant::Keccak);
         break;
     }
+    case Blake2b_224: {
+        blake2b_state copy = d->blake2bContext;
+        d->result.resize(224 / 8);
+        blake2b_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2b_256: {
+        blake2b_state copy = d->blake2bContext;
+        d->result.resize(224 / 8);
+        blake2b_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2b_384: {
+        blake2b_state copy = d->blake2bContext;
+        d->result.resize(224 / 8);
+        blake2b_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2b_512: {
+        blake2b_state copy = d->blake2bContext;
+        d->result.resize(224 / 8);
+        blake2b_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2s_224: {
+        blake2s_state copy = d->blake2sContext;
+        d->result.resize(224 / 8);
+        blake2s_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2s_256: {
+        blake2s_state copy = d->blake2sContext;
+        d->result.resize(224 / 8);
+        blake2s_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2s_384: {
+        blake2s_state copy = d->blake2sContext;
+        d->result.resize(224 / 8);
+        blake2s_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
+    case Blake2s_512: {
+        blake2s_state copy = d->blake2sContext;
+        d->result.resize(224 / 8);
+        blake2s_final(&copy, reinterpret_cast<uint8_t *>(d->result.data()), 224 / 8);
+        break;
+    }
 #endif
     }
     return d->result;
@@ -573,15 +671,23 @@ int QCryptographicHash::hashLength(QCryptographicHash::Algorithm method)
         return SHA512HashSize;
     case QCryptographicHash::RealSha3_224:
     case QCryptographicHash::Keccak_224:
+    case QCryptographicHash::Blake2b_224:
+    case QCryptographicHash::Blake2s_224:
         return 224 / 8;
     case QCryptographicHash::RealSha3_256:
     case QCryptographicHash::Keccak_256:
+    case QCryptographicHash::Blake2b_256:
+    case QCryptographicHash::Blake2s_256:
         return 256 / 8;
     case QCryptographicHash::RealSha3_384:
     case QCryptographicHash::Keccak_384:
+    case QCryptographicHash::Blake2b_384:
+    case QCryptographicHash::Blake2s_384:
         return 384 / 8;
     case QCryptographicHash::RealSha3_512:
     case QCryptographicHash::Keccak_512:
+    case QCryptographicHash::Blake2b_512:
+    case QCryptographicHash::Blake2s_512:
         return 512 / 8;
 #endif
     }

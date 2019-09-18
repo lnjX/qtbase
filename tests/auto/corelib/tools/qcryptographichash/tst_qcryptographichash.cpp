@@ -44,6 +44,8 @@ private slots:
     void sha1();
     void sha3_data();
     void sha3();
+    void blake2_data();
+    void blake2();
     void files_data();
     void files();
     void hashLength();
@@ -255,6 +257,68 @@ void tst_QCryptographicHash::sha3_data()
 }
 
 void tst_QCryptographicHash::sha3()
+{
+    QFETCH(QCryptographicHash::Algorithm, algorithm);
+    QFETCH(QByteArray, data);
+    QFETCH(QByteArray, expectedResult);
+
+    const auto result = QCryptographicHash::hash(data, algorithm);
+    QCOMPARE(result, expectedResult);
+}
+
+void tst_QCryptographicHash::blake2_data()
+{
+    QTest::addColumn<QCryptographicHash::Algorithm>("algorithm");
+    QTest::addColumn<QByteArray>("data");
+    QTest::addColumn<QByteArray>("expectedResult");
+
+#define ROW(Tag, Algorithm, Input, Result) \
+    QTest::newRow(Tag) << Algorithm << QByteArrayLiteral(Input) << QByteArray::fromHex(Result)
+
+    ROW("sha3_224_pangram",
+        QCryptographicHash::Sha3_224,
+        "The quick brown fox jumps over the lazy dog",
+        "d15dadceaa4d5d7bb3b48f446421d542e08ad8887305e28d58335795");
+
+    ROW("sha3_224_pangram_dot",
+        QCryptographicHash::Sha3_224,
+        "The quick brown fox jumps over the lazy dog.",
+        "2d0708903833afabdd232a20201176e8b58c5be8a6fe74265ac54db0");
+
+    ROW("sha3_256_pangram",
+        QCryptographicHash::Sha3_256,
+        "The quick brown fox jumps over the lazy dog",
+        "69070dda01975c8c120c3aada1b282394e7f032fa9cf32f4cb2259a0897dfc04");
+
+    ROW("sha3_256_pangram_dot",
+        QCryptographicHash::Sha3_256,
+        "The quick brown fox jumps over the lazy dog.",
+        "a80f839cd4f83f6c3dafc87feae470045e4eb0d366397d5c6ce34ba1739f734d");
+
+    ROW("sha3_384_pangram",
+        QCryptographicHash::Sha3_384,
+        "The quick brown fox jumps over the lazy dog",
+        "7063465e08a93bce31cd89d2e3ca8f602498696e253592ed26f07bf7e703cf328581e1471a7ba7ab119b1a9ebdf8be41");
+
+    ROW("sha3_384_pangram_dot",
+        QCryptographicHash::Sha3_384,
+        "The quick brown fox jumps over the lazy dog.",
+        "1a34d81695b622df178bc74df7124fe12fac0f64ba5250b78b99c1273d4b080168e10652894ecad5f1f4d5b965437fb9");
+
+    ROW("sha3_512_pangram",
+        QCryptographicHash::Sha3_512,
+        "The quick brown fox jumps over the lazy dog",
+        "01dedd5de4ef14642445ba5f5b97c15e47b9ad931326e4b0727cd94cefc44fff23f07bf543139939b49128caf436dc1bdee54fcb24023a08d9403f9b4bf0d450");
+
+    ROW("sha3_512_pangram_dot",
+        QCryptographicHash::Sha3_512,
+        "The quick brown fox jumps over the lazy dog.",
+        "18f4f4bd419603f95538837003d9d254c26c23765565162247483f65c50303597bc9ce4d289f21d1c2f1f458828e33dc442100331b35e7eb031b5d38ba6460f8");
+
+#undef ROW
+}
+
+void tst_QCryptographicHash::blake2()
 {
     QFETCH(QCryptographicHash::Algorithm, algorithm);
     QFETCH(QByteArray, data);

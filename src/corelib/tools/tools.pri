@@ -49,6 +49,10 @@ HEADERS +=  \
 
 
 SOURCES += \
+#         ../3rdparty/libb2/src/blake2b.c \
+#         ../3rdparty/libb2/src/blake2b-ref.c \
+#         ../3rdparty/libb2/src/blake2s.c \
+#         ../3rdparty/libb2/src/blake2s-ref.c \
         tools/qarraydata.cpp \
         tools/qbitarray.cpp \
         tools/qcryptographichash.cpp \
@@ -93,6 +97,8 @@ qtConfig(commandlineparser) {
 INCLUDEPATH += ../3rdparty/md5 \
                ../3rdparty/md4 \
                ../3rdparty/sha3
+
+# include($$PWD/../../3rdparty/libb2.pri)
 
 qtConfig(system-doubleconversion) {
     QMAKE_USE_PRIVATE += doubleconversion

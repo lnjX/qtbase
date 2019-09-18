@@ -1,0 +1,18 @@
+[
+    {
+        "Id": "libb2",
+        "Name": "C library providing BLAKE2b, BLAKE2s, BLAKE2bp, BLAKE2sp",
+        "QDocModule": "qtcore",
+        "QtUsage": "Used in Qt Core (QCryptographicHash).",
+        "Files": "src/blake2b.c src/blake2b-load-sse2.h src/blake2b-load-sse41.h src/blake2bp.c src/blake2bp-test.c src/blake2b-ref.c src/blake2b-round.h src/blake2b-test.c src/blake2-config.h src/blake2-dispatch.c src/blake2.h src/blake2-impl.h src/blake2-kat.h src/blake2s.c src/blake2s-load-sse2.h src/blake2s-load-sse41.h src/blake2s-load-xop.h src/blake2sp.c src/blake2sp-test.c src/blake2s-ref.c src/blake2s-round.h src/blake2s-test.c",
+
+        "Description": "BLAKE2 is a cryptographic hash function faster than MD5, SHA-1, SHA-2, and SHA-3, yet is at least as secure as the latest standard SHA-3.",
+        "Version": "3.2",
+        "License": "Creative Commons Zero v1.0 Universal",
+        "LicenseId": "CC0-1.0",
+        "LicenseFile": "COPYING",
+        "Copyright": "Written in 2012 by Samuel Neves <sneves@dei.uc.pt>
+
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty."
+    }
+]
