@@ -11,6 +11,7 @@ qt_internal_add_module(Xml
     SOURCES
         dom/qdom.cpp dom/qdom.h dom/qdom_p.h
         dom/qdomhelpers.cpp dom/qdomhelpers_p.h
+        compat/removed_api.cpp
         qtxmlglobal.h
     DEFINES
         QT_NO_FOREACH

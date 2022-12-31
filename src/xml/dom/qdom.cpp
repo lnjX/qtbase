@@ -70,7 +70,7 @@ using namespace Qt::StringLiterals;
 /*
   Helper to split a qualified name in the prefix and local name.
 */
-static void qt_split_namespace(QString& prefix, QString& name, const QString& qName, bool hasURI)
+static void qt_split_namespace(QString& prefix, QString& name, QAnyStringView qName, bool hasURI)
 {
     qsizetype i = qName.indexOf(u':');
     if (i == -1) {
@@ -95,7 +95,7 @@ QDomImplementation::InvalidDataPolicy QDomImplementationPrivate::invalidDataPoli
 
 // [5] Name ::= (Letter | '_' | ':') (NameChar)*
 
-static QString fixedXmlName(const QString &_name, bool *ok, bool namespaces = false)
+static QString fixedXmlName(QAnyStringView _name, bool *ok, bool namespaces = false)
 {
     QString name, prefix;
     if (namespaces)
@@ -441,7 +441,7 @@ QDomImplementation::~QDomImplementation()
     \row \li XML \li 1.0
     \endtable
 */
-bool QDomImplementation::hasFeature(const QString& feature, const QString& version) const
+bool QDomImplementation::hasFeature(QAnyStringView feature, QAnyStringView version) const
 {
     if (feature == "XML"_L1) {
         if (version.isEmpty() || version == "1.0"_L1)
@@ -483,7 +483,7 @@ bool QDomImplementation::hasFeature(const QString& feature, const QString& versi
 
     \sa createDocument()
 */
-QDomDocumentType QDomImplementation::createDocumentType(const QString& qName, const QString& publicId, const QString& systemId)
+QDomDocumentType QDomImplementation::createDocumentType(QAnyStringView qName, QAnyStringView publicId, QAnyStringView systemId)
 {
     bool ok;
     QString fixedName = fixedXmlName(qName, &ok, true);
@@ -516,7 +516,7 @@ QDomDocumentType QDomImplementation::createDocumentType(const QString& qName, co
     function also adds a root element node with the qualified name \a
     qName and the namespace URI \a nsURI.
 */
-QDomDocument QDomImplementation::createDocument(const QString& nsURI, const QString& qName, const QDomDocumentType& doctype)
+QDomDocument QDomImplementation::createDocument(QAnyStringView nsURI, QAnyStringView qName, const QDomDocumentType& doctype)
 {
     QDomDocument doc(doctype);
     QDomElement root = doc.createElementNS(nsURI, qName);

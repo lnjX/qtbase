@@ -249,6 +249,8 @@ public:
     template <typename Visitor>
     inline constexpr decltype(auto) visit(Visitor &&v) const;
 
+    [[nodiscard]] constexpr qsizetype indexOf(QChar ch, qsizetype from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const;
+
     [[nodiscard]]
     constexpr QAnyStringView mid(qsizetype pos, qsizetype n = -1) const
     {

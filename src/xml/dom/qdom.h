@@ -65,9 +65,14 @@ public:
     bool operator!= (const QDomImplementation&) const;
 
     // functions
+#if QT_XML_REMOVED_SINCE(6, 6)
     bool hasFeature(const QString& feature, const QString& version) const;
     QDomDocumentType createDocumentType(const QString& qName, const QString& publicId, const QString& systemId);
     QDomDocument createDocument(const QString& nsURI, const QString& qName, const QDomDocumentType& doctype);
+#endif
+    bool hasFeature(QAnyStringView feature, QAnyStringView version) const;
+    QDomDocumentType createDocumentType(QAnyStringView qName, QAnyStringView publicId, QAnyStringView systemId);
+    QDomDocument createDocument(QAnyStringView nsURI, QAnyStringView qName, const QDomDocumentType& doctype);
 
     enum InvalidDataPolicy { AcceptInvalidChars = 0, DropInvalidChars, ReturnNullNode };
     static InvalidDataPolicy invalidDataPolicy();

@@ -1448,6 +1448,11 @@ bool QtPrivate::equalStrings(QBasicUtf8StringView<false> lhs, QBasicUtf8StringVi
     return lhs.size() == rhs.size() && (!lhs.size() || memcmp(lhs.data(), rhs.data(), lhs.size()) == 0);
 }
 
+qsizetype QAnyStringView::indexOf(QChar ch, qsizetype from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const
+{
+
+}
+
 bool QAnyStringView::equal(QAnyStringView lhs, QAnyStringView rhs) noexcept
 {
     if (lhs.size() != rhs.size() && lhs.isUtf8() == rhs.isUtf8())
